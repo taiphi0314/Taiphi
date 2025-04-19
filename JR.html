@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jen & Panda Relationship Timer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      width: 85%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://example.com/para-lang-sayo.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="container">
+    <h1>Jen & Panda Relationship Timer</h1>
+    <input type="date" id="inputDate" placeholder="Select a date">
+    <button onclick="calculateRelationshipDuration()">Calculate Duration</button>
+    <div class="result" id="relationshipResult"></div>
+    <div class="footer" id="anniversaryMessage"></div>
+  </div>
+
+  <script>
+    function calculateRelationshipDuration() {
+      const inputDate = new Date(document.getElementById('inputDate').value);
+      const startDate = new Date(2020, 2, 14);
+      const result = document.getElementById('relationshipResult');
+      const footer = document.getElementById('anniversaryMessage');
+
+      if (isNaN(inputDate)) {
+        result.innerHTML = 'Please enter a valid date.';
+        footer.innerHTML = '';
+        return;
+      }
+
+      if (inputDate < startDate) {
+        result.innerHTML = 'Selected date is before the relationship began.';
+        footer.innerHTML = '';
+        return;
+      }
+
+      let years = inputDate.getFullYear() - startDate.getFullYear();
+      let months = inputDate.getMonth() - startDate.getMonth();
+      let days = inputDate.getDate() - startDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(inputDate.getFullYear(), inputDate.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const dayDiff = Math.floor((inputDate - startDate) / (1000 * 60 * 60 * 24));
+
+      let nextAnniversary = new Date(startDate);
+      nextAnniversary.setFullYear(startDate.getFullYear() + years + 1);
+
+      const remainingTime = nextAnniversary - inputDate;
+      const remainingDays = Math.ceil(remainingTime / (1000 * 60 * 60 * 24));
+
+      result.innerHTML = `It has been <strong>${years}</strong> year(s), <strong>${months}</strong> month(s), and <strong>${days}</strong> day(s) since your relationship began. <br>Total: <strong>${dayDiff}</strong> day(s). <br>Next anniversary in <strong>${remainingDays}</strong> day(s).`;
+
+      if (years >= 1) {
+        footer.innerHTML = `❤️ Happy <strong>${years}</strong>-year anniversary! ❤️`;
+      } else {
+        footer.innerHTML = '';
+      }
+    }
+  </script>
+</body>
+</html>
+
+
